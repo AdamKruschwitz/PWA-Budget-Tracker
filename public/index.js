@@ -2,7 +2,9 @@ let transactions = [];
 let myChart;
 
 // Check for indexedDB and alert the user if features are unavailable
-// TODO
+if (!window.indexedDB) {
+  console.log("Your browser doesn't support a stable version of IndexedDB. Offline budget tracking will not be available.");
+}
 
 fetch("/api/transaction")
   .then(response => {

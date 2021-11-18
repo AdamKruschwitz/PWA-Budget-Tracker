@@ -15,9 +15,9 @@ request.onsuccess = function(event) {
 }
 
 request.onupgradeneeded = function(event) {
-  db = event.result.target;
+  db = event.target.result;
 
-  let transactionStore = db.createObjectStore("transaction");
+  let transactionStore = db.createObjectStore("transaction", { autoIncrement: true });
 
   transactionStore.createIndex("date", "date", { unique: true });
 }
@@ -178,7 +178,18 @@ function sendTransaction(isAdding) {
 
 // Add a transaction to the indexedDB
 function saveRecord(transaction) {
-  // TODO
+  // Open a new IndexedDB transaction
+  var t = db.transaction(["transaction"], "readwrite");
+  t.oncomplete = function(event) {
+    console.log("transaction saved.");
+  }
+  t.onerror = function(event) {
+    console.log("Something went wrong!");
+    console.log(event.target.errorCode);
+  }
+
+  var transactionStore = t.objectStore("transaction");
+  transactionStore.add(transaction);
 }
 
 document.querySelector("#add-btn").onclick = function() {

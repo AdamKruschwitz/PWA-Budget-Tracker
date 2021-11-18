@@ -1,6 +1,9 @@
 let transactions = [];
 let myChart;
 
+// Check for indexedDB and alert the user if features are unavailable
+// TODO
+
 fetch("/api/transaction")
   .then(response => {
     return response.json();
@@ -12,7 +15,13 @@ fetch("/api/transaction")
     populateTotal();
     populateTable();
     populateChart();
-  });
+  })
+  .then(() => {
+    // Check indexedDB and send over any unsettled transactions
+    // TODO
+  }); 
+
+
 
 function populateTotal() {
   // reduce transaction amounts to a single total value
@@ -142,6 +151,11 @@ function sendTransaction(isAdding) {
     nameEl.value = "";
     amountEl.value = "";
   });
+}
+
+// Add a transaction to the indexedDB
+function saveRecord() {
+  // TODO
 }
 
 document.querySelector("#add-btn").onclick = function() {

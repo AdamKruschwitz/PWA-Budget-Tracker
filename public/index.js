@@ -1,5 +1,16 @@
 let transactions = [];
 let myChart;
+const request = indexedDB.open("BudgetTracker", 1);
+var db;
+
+request.onerror = function(event) {
+  console.log("An error has occured with IndexedDB!");
+  console.log(event.target.errorCode);
+}
+
+request.onsuccess = function(event) {
+  db = event.target.result;
+}
 
 // Check for indexedDB and alert the user if features are unavailable
 if (!window.indexedDB) {
@@ -156,7 +167,7 @@ function sendTransaction(isAdding) {
 }
 
 // Add a transaction to the indexedDB
-function saveRecord() {
+function saveRecord(transaction) {
   // TODO
 }
 

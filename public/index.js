@@ -34,14 +34,46 @@ fetch("/api/transaction")
   .then(data => {
     // save db data on global variable
     transactions = data;
-
-    populateTotal();
-    populateTable();
-    populateChart();
   })
   .then(() => {
     // Check indexedDB and send over any unsettled transactions
-    // TODO
+    const t = db.transaction(["transaction"], "readwrite");
+    
+    var transactionStore = t.objectStore("transaction");
+
+    // Get all transactions in IndexedDB
+    let offlineTransactions = transactionStore.getAll();
+    offlineTransactions.onsuccess = function(event) {
+      // Add each transaction to the mongodb database
+      fetch("/api/transaction/bulk", {
+        method: "POST",
+        body: JSON.stringify(event.target.result),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      transactionStore.clear();
+      transactions = [
+        ...transactions,
+        ...event.target.result
+      ]
+
+      // Sorting the array in case some offline results are not most recent.
+      transactions.sort((el1, el2) => {
+        return new Date(el2.date) - new Date(el1.date);
+      })
+
+      populateTotal();
+      populateTable();
+      populateChart();
+    }
+  })
+  .then(() => {
+    // Render the transactions to the page
+    populateTotal();
+    populateTable();
+    populateChart();
   }); 
 
 

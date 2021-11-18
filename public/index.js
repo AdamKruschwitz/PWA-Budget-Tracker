@@ -1,6 +1,8 @@
 let transactions = [];
 let myChart;
-const request = indexedDB.open("BudgetTracker", 1);
+
+// Get IndexedDB
+const request = indexedDB.open("BudgetTracker", 2);
 var db;
 
 request.onerror = function(event) {
@@ -10,6 +12,14 @@ request.onerror = function(event) {
 
 request.onsuccess = function(event) {
   db = event.target.result;
+}
+
+request.onupgradeneeded = function(event) {
+  db = event.result.target;
+
+  let transactionStore = db.createObjectStore("transaction");
+
+  transactionStore.createIndex("date", "date", { unique: true });
 }
 
 // Check for indexedDB and alert the user if features are unavailable

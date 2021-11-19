@@ -4,7 +4,6 @@
 * [Description](#description)
 * [Installation instructions](#installation-instructions)
 * [Usage Information](#usage-information)
-* [Program Tests](#program-tests)
 * [License](#license)
 * [Contributors](#contributors)
 * [Questions](#questions)
@@ -18,7 +17,8 @@ Clone the project and run ```npm install```
 ## Usage Information
 Run ```mongod``` in a separate terminal in order to start MongoDB. Next, run ```npm start``` to start the server. You can throttle your internet connection in chrome developer tools to simulate losing connection.
 
-## Program Tests
+## Application Demo
+![A demo of the budgeting application](demo.gif)
 
 
 ## License
